@@ -1,0 +1,89 @@
+<!doctype html>
+
+<html ng-app="todoApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Hypermedia Todo App</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="/js/app.js"></script>
+
+    <style>
+    body { margin: 40px 0; }
+    .add-form { margin-bottom: 30px; }
+
+    .todo {
+      margin-bottom: 15px;
+      padding: 0 15px 5px 13px;
+      border-top: 1px solid #eee;
+    }
+
+    .active {
+      border-left: 2px solid #fff;
+    }
+
+    .completed {
+      background-color: #eee;
+      border-left: 2px solid #555;
+    }
+
+    .completed h2 {
+      color: #888;
+    }
+    </style>
+</head>
+
+<body ng-controller="mainController">
+  <div class="container">
+    <div class="page-header">
+      <h1>Hypermedia Todo App</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-md-7">
+        <form class="form-inline add-form" role="form" ng-show="cond.canCreate()">
+          <div class="form-group col-md-8">
+            <input type="todo"
+                   class="form-control col-md-6"
+                   id="todo"
+                   placeholder="What to do?"
+                   ng-model="createForm.title">
+          </div>
+          <button type="submit"
+                  class="btn btn-primary"
+                  ng-click="createTodo()">Add</button>
+        </form>
+
+        <div class="todos">
+          <div class="todo" ng-repeat="todo in todos" ng-class="getState(todo)">
+            <h2>{{ todo.attributes.title }}</h2>
+            <p>
+              <button type="button"
+                      class="btn btn-success btn-sm"
+                      ng-click="completeTodo(todo)"
+                      ng-show="cond.canComplete(todo)">Complete</button>
+              <button type="button"
+                      class="btn btn-info btn-sm"
+                      ng-click="activateTodo(todo)"
+                      ng-show="cond.canActivate(todo)">Not done!</button>
+              <button type="button"
+                      class="btn btn-danger btn-sm"
+                      ng-click="deleteTodo(todo)"
+                      ng-show="cond.canDelete(todo)">Delete</button>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <h4>Todo List JSON</h4>
+        <pre><code>{{ root | json }}</code></pre>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
