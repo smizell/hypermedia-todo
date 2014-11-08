@@ -40,6 +40,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 app.get '/todos', (req, res) ->
+  # res.redirect urls.todos()
   todos = new TodosResource contextBuilder(), storage
   res.send todos.list()
 

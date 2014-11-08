@@ -40,6 +40,8 @@ app.use(cors())
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
+storage.createTodo 'On Server 2 now', ->
+
 app.get '/todos', (req, res) ->
   todos = new TodosResource contextBuilder(), storage
   res.send todos.list()
