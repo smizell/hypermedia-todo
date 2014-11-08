@@ -68,6 +68,11 @@ app.get '/api/todos/:id', (req, res) ->
   todo = new TodoResource context, storage
   res.send todo.show()
 
+app.post '/api/todos/:id', (req, res) ->
+  context = contextBuilder(id: parseInt(req.params.id), title: req.body.title)
+  todo = new TodoResource context, storage
+  res.send todo.edit()
+
 app.delete '/api/todos/:id', (req, res) ->
   context = contextBuilder(id: parseInt(req.params.id))
   todo = new TodoResource context, storage

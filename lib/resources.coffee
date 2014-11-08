@@ -12,7 +12,7 @@ class RootResource
 
 class TodoResource
   constructor: (@context, @storage) ->
-    {@urls, @conditions, @id} = @context
+    {@urls, @conditions, @id, @title} = @context
 
   show: ->
     @storage.getTodo @id, (err, todo) =>
@@ -43,6 +43,10 @@ class TodoResource
 
   markComplete: ->
     @storage.updateTodo @id, status: 'complete', (err, todo) =>
+      @show()
+
+  edit: ->
+    @storage.updateTodo @id, title: @title, (err, todo) =>
       @show()
 
   remove: ->
