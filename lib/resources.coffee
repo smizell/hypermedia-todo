@@ -1,6 +1,15 @@
 _ = require 'lodash'
 {Representer} = require './representer'
 
+class RootResource
+  constructor: (@context, @storage) ->
+    {@urls} = @context
+
+  show: ->
+    rep = new Representer
+    rep.addTransition 'list', @urls.todos()
+    rep
+
 class TodoResource
   constructor: (@context, @storage) ->
     {@urls, @conditions, @id} = @context
@@ -79,6 +88,7 @@ class TodosResource
       rep
 
 module.exports = {
+  RootResource
   TodoResource
   TodosResource
 }

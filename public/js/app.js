@@ -33,19 +33,30 @@ todoApp.factory('resourceService', function($http, $q) {
 
 todoApp.controller('mainController', function($scope, $http, resourceService) {
   // The only URL my app knows, the "front door"
-  var rootUrl = '/todos'
+  var rootUrl = '/api'
 
   // Set some initial data
   $scope.todos = [];
   $scope.createForm = {};
 
+  setTodosFromResponse = function(resource) {
+    return setTodos(resource[0]);
+  }
+
+  getTodoList = function(resource) {
+    return resourceService.invoke(resource[0], 'list')
+      .then(setTodosFromResponse)
+  }
+
   // Load initial todos
   $http.get(rootUrl)
-    .success(function(resource) {
-      $scope.defineConditions();
-      $scope.setTodos(resource);
+    .then(function(resource) {
+      return resourceService.invoke(resource.data, 'list')
     })
-    .error(function(data) { console.log('Error: ' + data); });
+    .then(function(resource) {
+      $scope.defineConditions();
+      $scope.setTodos(resource[0]);
+    })
 
   // The state of a todo based on affordances
   $scope.getState = function(todo) {
@@ -56,16 +67,6 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
   $scope.setTodos = function(resource) {
     $scope.root = resource;
     $scope.todos = resourceService.invoke(resource, 'todo');
-  }
-
-  setTodosFromResponse = function(resource) {
-    $scope.root = resource[0];
-    $scope.todos = resourceService.invoke(resource[0], 'todo');
-  }
-
-  getTodoList = function(resource) {
-    resourceService.invoke(resource[0], 'list')
-      .then(setTodosFromResponse)
   }
 
   $scope.createTodo = function() {

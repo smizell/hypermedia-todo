@@ -1,6 +1,6 @@
 _ = require 'lodash'
 {Storage} = require './lib/storage'
-{TodoResource, TodosResource} = require './lib/resources'
+{RootResource, TodoResource, TodosResource} = require './lib/resources'
 
 authenticate = ->
   name: 'Stephen Mizell'
@@ -26,10 +26,10 @@ contextBuilder = (options={}) ->
 base = 'http://127.0.0.1:3000'
 
 urls =
-  todo: (todo) -> "#{base}/todos/#{todo.id}"
-  todos: -> "#{base}/todos"
-  markComplete: (todo) -> "#{base}/todos/#{todo.id}/mark_complete"
-  markActive: (todo) -> "#{base}/todos/#{todo.id}/mark_active"
+  todo: (todo) -> "#{base}/api/todos/#{todo.id}"
+  todos: -> "#{base}/api/todos"
+  markComplete: (todo) -> "#{base}/api/todos/#{todo.id}/mark_complete"
+  markActive: (todo) -> "#{base}/api/todos/#{todo.id}/mark_active"
 
 express = require 'express'
 cors = require 'cors'
@@ -46,31 +46,35 @@ app.use (req, res, next) ->
   res.set 'Content-Type', 'application/vnd.smizell.hypermedia+json'
   next()
 
-app.get '/todos', (req, res) ->
+app.get '/api', (req, res) ->
+  root = new RootResource contextBuilder(), storage
+  res.send root.show()
+
+app.get '/api/todos', (req, res) ->
   # res.redirect urls.todos()
   todos = new TodosResource contextBuilder(), storage
   res.send todos.list()
 
-app.post '/todos', (req, res) ->
+app.post '/api/todos', (req, res) ->
   todos = new TodosResource contextBuilder(title: req.body.title), storage
   res.send todos.create()
 
-app.get '/todos/:id', (req, res) ->
+app.get '/api/todos/:id', (req, res) ->
   context = contextBuilder(id: parseInt(req.params.id))
   todo = new TodoResource context, storage
   res.send todo.show()
 
-app.delete '/todos/:id', (req, res) ->
+app.delete '/api/todos/:id', (req, res) ->
   context = contextBuilder(id: parseInt(req.params.id))
   todo = new TodoResource context, storage
   res.send todo.remove()
 
-app.post '/todos/:id/mark_complete', (req, res) ->
+app.post '/api/todos/:id/mark_complete', (req, res) ->
   context = contextBuilder(id: parseInt(req.params.id))
   todo = new TodoResource context, storage
   res.send todo.markComplete()
 
-app.post '/todos/:id/mark_active', (req, res) ->
+app.post '/api/todos/:id/mark_active', (req, res) ->
   context = contextBuilder(id: parseInt(req.params.id))
   todo = new TodoResource context, storage
   res.send todo.markActive()
