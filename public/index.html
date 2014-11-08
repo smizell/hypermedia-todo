@@ -8,33 +8,10 @@
     <title>Hypermedia Todo App</title>
 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
     <script src="/js/app.js"></script>
-
-    <style>
-    body { margin: 40px 0; }
-    .add-form { margin-bottom: 30px; }
-
-    .todo {
-      margin-bottom: 15px;
-      padding: 0 15px 5px 13px;
-      border-top: 1px solid #eee;
-    }
-
-    .active {
-      border-left: 2px solid #fff;
-    }
-
-    .completed {
-      background-color: #eee;
-      border-left: 2px solid #555;
-    }
-
-    .completed h2 {
-      color: #888;
-    }
-    </style>
 </head>
 
 <body ng-controller="mainController">
@@ -82,9 +59,13 @@
         </div>
       </div>
 
-      <div class="col-md-5">
+      <div class="responses col-md-5">
         <h4>Todo List JSON</h4>
         <pre><code>{{ root | json }}</code></pre>
+        <div ng-repeat="todo in todos">
+          <h4>Todo {{ todo.attributes.id }} JSON</h4>
+          <pre><code>{{ todo | json }}</code></pre>
+        </div>
       </div>
     </div>
   </div>

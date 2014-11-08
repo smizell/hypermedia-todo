@@ -1,0 +1,31 @@
+body { margin: 40px 0; }
+.add-form { margin-bottom: 30px; }
+
+.todo {
+  margin-bottom: 15px;
+  padding: 0 15px 5px 13px;
+  border-top: 1px solid #eee;
+}
+
+.active {
+  border-left: 2px solid #fff;
+}
+
+.completed {
+  background-color: #eee;
+  border-left: 2px solid #555;
+}
+
+.completed h2 {
+  color: #888;
+}
+
+.responses pre {
+  overflow: scroll;
+}
+
+.responses pre code {
+  overflow: hidden;
+  word-wrap: normal;
+  white-space: pre;
+}

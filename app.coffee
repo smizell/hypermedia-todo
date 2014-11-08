@@ -23,11 +23,16 @@ contextBuilder = (options={}) ->
   baseContext = {urls, conditions, user}
   _.extend {}, baseContext, options
 
-base = 'http://127.0.0.1:3000'
+port = 3000
+base = "http://127.0.0.1:#{port}"
+
+# Used for example purposes, see README
+todoServer = 'http://127.0.0.1:4000/api/todos'
 
 urls =
   todo: (todo) -> "#{base}/api/todos/#{todo.id}"
   todos: -> "#{base}/api/todos"
+  # todos: -> todoServer
   markComplete: (todo) -> "#{base}/api/todos/#{todo.id}/mark_complete"
   markActive: (todo) -> "#{base}/api/todos/#{todo.id}/mark_active"
 
@@ -51,7 +56,6 @@ app.get '/api', (req, res) ->
   res.send root.show()
 
 app.get '/api/todos', (req, res) ->
-  # res.redirect urls.todos()
   todos = new TodosResource contextBuilder(), storage
   res.send todos.list()
 

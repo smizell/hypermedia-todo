@@ -3,7 +3,25 @@
 This is an example of some neat tricks you can do with a hypermedia API and a
 hypermedia-enabled client.
 
-## Examples
+## Running the Server
+
+First clone this repo and install dependencies:
+
+```shell
+npm install
+```
+
+Run the server:
+
+```
+coffee app.coffee
+```
+
+*Note*: You can use `nodemon` to watch for changes for you.
+
+Visit http://127.0.0.1:3000 in your browser.
+
+## Examples of the benefits of Hypermedia
 
 These examples are very manual, but the purpose is to see what is changed in the code to make these examples work.
 
@@ -57,12 +75,12 @@ To try this out, simply go to the `app.coffee` and find/replace `/todos` with `/
 
 To take the previous example further, instead of simply changing the URLs, the server could send the client to a completely different server. The client would still work.
 
-There are several ways to show this example. Here's what I'm doing:
+To try this out:
 
 1. Copy the enter folder to another location on your system (this will be our secondary location)
-1. In the primary `app.coffee`, find the `base` variable and change the port from 3000 to 4000.
-1. In the primary `app.coffee `, find the response for `/todos` and uncomment the redirect line and remove the rest of the response
-1. In the secondary `app.coffee`, find the `base` variable and change the port from 3000 to 4000. At the end of the file, change the listening port to 4000.
+1. In the primary `app.coffee`, find the `urls` variable
+1. Uncomment the line that points to the `todoServer` and comment the previous `todos` URL
+1. In the secondary `app.coffee`, find the `port` variable and change it to 4000. At the end of the file
 
 Once complete, make sure both servers are running and have been restarted.
 

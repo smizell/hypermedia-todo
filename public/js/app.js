@@ -40,23 +40,13 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
   $scope.createForm = {};
 
   setTodosFromResponse = function(resource) {
-    return setTodos(resource[0]);
+    return $scope.setTodos(resource[0]);
   }
 
   getTodoList = function(resource) {
     return resourceService.invoke(resource[0], 'list')
       .then(setTodosFromResponse)
   }
-
-  // Load initial todos
-  $http.get(rootUrl)
-    .then(function(resource) {
-      return resourceService.invoke(resource.data, 'list')
-    })
-    .then(function(resource) {
-      $scope.defineConditions();
-      $scope.setTodos(resource[0]);
-    })
 
   // The state of a todo based on affordances
   $scope.getState = function(todo) {
@@ -114,4 +104,14 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
       }
     }
   }
+
+  // Load initial todos
+  $http.get(rootUrl)
+    .then(function(resource) {
+      return resourceService.invoke(resource.data, 'list')
+    })
+    .then(function(resource) {
+      $scope.defineConditions();
+      return $scope.setTodos(resource[0]);
+    })
 });
