@@ -27,7 +27,7 @@ These examples are very manual, but the purpose is to see what is changed in the
 
 ### Embed transitions rather than link to them
 
-One trick you can do is to embed transitions instead of linking to them it the client knows how to handle this. This comes in handy in situations where the client may always request a bunch of links, so instead of linking to them, they can be included in a message.
+One trick you can do is to embed transitions instead of linking to them if the client knows how to handle this. This comes in handy in situations where the client may always request a bunch of links, so instead of linking to them, they can be included in a message.
 
 To try this out:
 
@@ -46,9 +46,9 @@ To try this out:
 
 1. Go to the `app.coffee` file
 1. Find the `authorize` function
-1. Set `delete` to false
+1. Set `create` to false
 
-When this is done, the delete button will not be shown in the UI because the `delete` affordance is not in the message.
+When this is done, the create form will not be shown in the UI because the `create` affordance is not in the message.
 
 ### Changing responses
 
@@ -84,4 +84,4 @@ To try this out:
 
 Once complete, make sure both servers are running and have been restarted.
 
-Now go to http://127.0.0.1:3000 and you should see the reponses directing you to the secondary server.
+Now go to http://127.0.0.1:3000 and you should see the responses directing you to the secondary server.
