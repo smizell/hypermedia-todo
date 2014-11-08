@@ -10,6 +10,7 @@ class TodoResource
       url = @urls.todo todo
       rep = new Representer todo
       rep.addTransition 'self', url
+      rep.addTransition 'list', @urls.todos()
 
       if @conditions.todo.edit
         rep.addTransition 'edit', url, 'process', title: todo.title
@@ -29,18 +30,17 @@ class TodoResource
 
   markActive: ->
     @storage.updateTodo @id, status: 'active', (err, todo) =>
-      todos = new TodosResource @context, @storage
-      todos.list()
+      @show()
 
   markComplete: ->
     @storage.updateTodo @id, status: 'complete', (err, todo) =>
-      todos = new TodosResource @context, @storage
-      todos.list()
+      @show()
 
   remove: ->
     @storage.deleteTodo @id, =>
-      todos = new TodosResource @context, @storage
-      todos.list()
+      rep = new Representer
+      rep.addTransition 'list', @urls.todos()
+      rep
 
 class TodosResource
   constructor: (@context, @storage) ->
@@ -52,7 +52,12 @@ class TodosResource
 
   create: ->
     @storage.createTodo @title, (err, todo) =>
-      @list()
+      # Return a list of todos
+      # @list()
+
+      # Return the todo that was created
+      resource = @_buildTodoResource todo
+      resource.show()
 
   list: ->
     @storage.getTodos (err, todos) =>

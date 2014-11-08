@@ -45,6 +45,9 @@
 
     <div class="row">
       <div class="col-md-7">
+        <div class="cannot-create alert alert-info" ng-show="!cond.canCreate()">
+          Looks like you can't create todos...
+        </div>
         <form class="form-inline add-form" role="form" ng-show="cond.canCreate()">
           <div class="form-group col-md-8">
             <input type="todo"

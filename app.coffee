@@ -23,26 +23,31 @@ contextBuilder = (options={}) ->
   baseContext = {urls, conditions, user}
   _.extend {}, baseContext, options
 
+base = 'http://127.0.0.1:3000'
+
 urls =
-  todo: (todo) -> "http://127.0.0.1:4000/todos/#{todo.id}"
-  todos: -> 'http://127.0.0.1:4000/todos'
-  markComplete: (todo) -> "http://127.0.0.1:4000/todos/#{todo.id}/mark_complete"
-  markActive: (todo) -> "http://127.0.0.1:4000/todos/#{todo.id}/mark_active"
+  todo: (todo) -> "#{base}/todos/#{todo.id}"
+  todos: -> "#{base}/todos"
+  markComplete: (todo) -> "#{base}/todos/#{todo.id}/mark_complete"
+  markActive: (todo) -> "#{base}/todos/#{todo.id}/mark_active"
 
 express = require 'express'
-bodyParser = require 'body-parser'
 cors = require 'cors'
+bodyParser = require 'body-parser'
 app = express()
 storage = new Storage
 
-
 app.use(cors())
-app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.json());
+app.use express.static(__dirname + '/public')
+app.use bodyParser.json()
 
-storage.createTodo 'On Server 2 now', ->
+# Add our content type
+app.use (req, res, next) ->
+  res.set 'Content-Type', 'application/vnd.smizell.hypermedia+json'
+  next()
 
 app.get '/todos', (req, res) ->
+  # res.redirect urls.todos()
   todos = new TodosResource contextBuilder(), storage
   res.send todos.list()
 
@@ -73,4 +78,4 @@ app.post '/todos/:id/mark_active', (req, res) ->
 app.get '*', (req, res) ->
   res.sendFile __dirname + '/public/index.html'
 
-app.listen(4000);
+app.listen(3000);
