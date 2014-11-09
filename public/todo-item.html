@@ -1,0 +1,27 @@
+<h2 ng-hide="editing">{{ todo.attributes.title }}</h2>
+<form class="form-inline edit-form" role="form" ng-show="editing">
+  <div class="form-group col-md-8 edit-input">
+    <input type="todo"
+           class="form-control col-md-6 edit-box"
+           id="todo"
+           placeholder="Change to?"
+           ng-model="editForm.title">
+  </div>
+  <button type="submit"
+          class="btn btn-primary edit-button"
+          ng-click="editTodo()">Save</button>
+</form>
+<p>
+  <button type="button"
+          class="btn btn-success btn-sm"
+          ng-click="completeTodo()"
+          ng-show="cond.canComplete(todo)">Complete</button>
+  <button type="button"
+          class="btn btn-info btn-sm"
+          ng-click="activateTodo()"
+          ng-show="cond.canActivate(todo)">Not done!</button>
+  <button type="button"
+          class="btn btn-danger btn-sm"
+          ng-click="deleteTodo()"
+          ng-show="cond.canDelete(todo)">Delete</button>
+</p>

@@ -25,8 +25,8 @@
         <div class="cannot-create alert alert-info" ng-show="!cond.canCreate()">
           Looks like you can't create todos...
         </div>
-        <form class="form-inline add-form" role="form" ng-show="cond.canCreate()">
-          <div class="form-group col-md-8">
+        <form class="form-inline create-form" role="form" ng-show="cond.canCreate()">
+          <div class="form-group col-md-8 create-input">
             <input type="todo"
                    class="form-control col-md-6"
                    id="todo"
@@ -39,22 +39,12 @@
         </form>
 
         <div class="todos">
-          <div class="todo" ng-repeat="todo in todos" ng-class="getState(todo)">
-            <h2>{{ todo.attributes.title }}</h2>
-            <p>
-              <button type="button"
-                      class="btn btn-success btn-sm"
-                      ng-click="completeTodo(todo)"
-                      ng-show="cond.canComplete(todo)">Complete</button>
-              <button type="button"
-                      class="btn btn-info btn-sm"
-                      ng-click="activateTodo(todo)"
-                      ng-show="cond.canActivate(todo)">Not done!</button>
-              <button type="button"
-                      class="btn btn-danger btn-sm"
-                      ng-click="deleteTodo(todo)"
-                      ng-show="cond.canDelete(todo)">Delete</button>
-            </p>
+          <div ng-repeat="todo in todos">
+            <div todo-item
+                 class="todo"
+                 todo="todo"
+                 cond="cond"
+                 ng-class="getState()"></div>
           </div>
         </div>
       </div>

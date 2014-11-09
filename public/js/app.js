@@ -48,12 +48,6 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
       .then(setTodosFromResponse)
   }
 
-  // The state of a todo based on affordances
-  $scope.getState = function(todo) {
-    if (todo.transitions.markComplete) return 'active';
-    return 'completed';
-  }
-
   $scope.setTodos = function(resource) {
     $scope.root = resource;
     $scope.todos = resourceService.invoke(resource, 'todo');
@@ -69,24 +63,6 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
     $scope.createForm = {}
   };
 
-  $scope.deleteTodo = function(todo) {
-    resourceService
-      .invoke(todo, 'delete')
-      .then(getTodoList);
-  };
-
-  $scope.completeTodo = function(todo) {
-    resourceService
-      .invoke(todo, 'markComplete')
-      .then(getTodoList);
-  };
-
-  $scope.activateTodo = function(todo) {
-    resourceService
-      .invoke(todo, 'markActive')
-      .then(getTodoList);
-  };
-
   // Conditions based on affordances
   $scope.defineConditions = function() {
     $scope.cond = {
@@ -95,6 +71,9 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
       },
       canComplete: function(todo) {
         return !!todo.transitions.markComplete;
+      },
+      canEdit: function(todo) {
+        return !!todo.transitions.edit;
       },
       canActivate: function(todo) {
         return !!todo.transitions.markActive;
@@ -114,4 +93,73 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
       $scope.defineConditions();
       return $scope.setTodos(resource[0]);
     })
+});
+
+todoApp.directive('todoItem', function() {
+  return {
+    templateUrl: 'todo-item.html',
+    scope: {
+      todo: "=todo",
+      cond: "=cond"
+    },
+    controller: function($scope, resourceService) {
+      $scope.editing = false;
+      $scope.editForm = { title: $scope.todo.attributes.title };
+
+      $scope.getState = function() {
+        if ($scope.todo.transitions.markComplete) return 'active';
+        return 'completed';
+      }
+
+      $scope.editTodo = function() {
+        resourceService
+          .invoke($scope.todo, 'edit', $scope.editForm)
+          .then(function(resource) {
+            $scope.todo = angular.extend($scope.todo, resource[0]);
+            $scope.editForm = { title: $scope.todo.attributes.title }
+            $scope.editing = false;
+          });
+      }
+
+      $scope.deleteTodo = function() {
+        resourceService
+          .invoke($scope.todo, 'delete')
+          .then(getTodoList);
+      };
+
+      $scope.completeTodo = function() {
+        resourceService
+          .invoke($scope.todo, 'markComplete')
+          .then(function(resource) {
+            $scope.todo = angular.extend($scope.todo, resource[0]);
+          });
+      };
+
+      $scope.activateTodo = function() {
+        resourceService
+          .invoke($scope.todo, 'markActive')
+          .then(function(resource) {
+            $scope.todo = angular.extend($scope.todo, resource[0]);
+          });
+      };
+    },
+    link: function(scope, element, attrs, ctrl) {
+      element.find('h2').on('click', function(e) {
+        e.stopPropagation();
+
+        if (scope.cond.canEdit(scope.todo)) {
+          scope.$apply(function() { scope.editing = true; });
+          element.find('.edit-box').focus();
+
+          angular.element(document).on('click', function() {
+            scope.$apply(function() { scope.editing = false; });
+          });
+
+          element.find('form').on('click', function(e) {
+            e.stopPropagation();
+          });
+        }
+      });
+    }
+  }
 });

@@ -1,5 +1,10 @@
 body { margin: 40px 0; }
-.add-form { margin-bottom: 30px; }
+.create-form, .edit-form { margin-bottom: 20px; }
+
+.edit-form {
+  margin-top: 16px;
+  margin-bottom: 13px;
+}
 
 .todo {
   margin-bottom: 15px;
@@ -28,4 +33,8 @@ body { margin: 40px 0; }
   overflow: hidden;
   word-wrap: normal;
   white-space: pre;
+}
+
+.create-input, .edit-input {
+  padding-left: 0;
 }

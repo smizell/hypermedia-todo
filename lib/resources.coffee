@@ -17,7 +17,7 @@ class TodoResource
   show: ->
     @storage.getTodo @id, (err, todo) =>
       url = @urls.todo todo
-      rep = new Representer todo
+      rep = new Representer _.pick(todo, ['title'])
       rep.addTransition 'self', url
       rep.addTransition 'list', @urls.todos()
 
