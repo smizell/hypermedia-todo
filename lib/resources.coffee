@@ -7,7 +7,7 @@ class RootResource
 
   show: ->
     rep = new Representer
-    rep.addTransition 'list', @urls.todos()
+    rep.addTransition 'todos', @urls.todos()
     rep
 
 class TodoResource

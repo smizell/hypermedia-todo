@@ -87,7 +87,7 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
   // Load initial todos
   $http.get(rootUrl)
     .then(function(resource) {
-      return resourceService.invoke(resource.data, 'list')
+      return resourceService.invoke(resource.data, 'todos')
     })
     .then(function(resource) {
       $scope.defineConditions();
@@ -99,8 +99,8 @@ todoApp.directive('todoItem', function() {
   return {
     templateUrl: 'todo-item.html',
     scope: {
-      todo: "=todo",
-      cond: "=cond"
+      todo: "=",
+      cond: "="
     },
     controller: function($scope, resourceService) {
       $scope.editing = false;
@@ -151,9 +151,12 @@ todoApp.directive('todoItem', function() {
           scope.$apply(function() { scope.editing = true; });
           element.find('.edit-box').focus();
 
-          angular.element(document).on('click', function() {
+          function removeFocus(e) {
             scope.$apply(function() { scope.editing = false; });
-          });
+            angular.element(document).off('click', removeFocus);
+          }
+
+          angular.element(document).on('click', removeFocus);
 
           element.find('form').on('click', function(e) {
             e.stopPropagation();
