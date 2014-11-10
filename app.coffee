@@ -91,4 +91,4 @@ app.post '/api/todos/:id/mark_active', (req, res) ->
 app.get '*', (req, res) ->
   res.sendFile __dirname + '/public/index.html'
 
-app.listen port
+app.listen 3000
