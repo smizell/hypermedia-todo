@@ -108,7 +108,8 @@ todoApp.directive('todoItem', function() {
 
       $scope.getState = function() {
         if ($scope.todo.transitions.markComplete) return 'active';
-        return 'completed';
+        if ($scope.todo.transitions.markActive) return 'completed';
+        return;
       }
 
       $scope.editTodo = function() {
