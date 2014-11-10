@@ -76,9 +76,11 @@ class TodosResource
     @storage.getTodos (err, todos) =>
       rep = new Representer
 
+      rep.addTransition 'self', @urls.todos()
+
       # Comment these remove links
       _.each todos, (todo) =>
-       rep.addTransition 'todo', @urls.todo(todo)
+       rep.addTransition 'show', @urls.todo(todo)
 
       # Uncomment to embed
       # rep.embedded.todo = []

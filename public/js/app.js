@@ -50,7 +50,7 @@ todoApp.controller('mainController', function($scope, $http, resourceService) {
 
   $scope.setTodos = function(resource) {
     $scope.root = resource;
-    $scope.todos = resourceService.invoke(resource, 'todo');
+    $scope.todos = resourceService.invoke(resource, 'show');
   }
 
   $scope.createTodo = function() {
