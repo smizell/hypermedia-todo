@@ -23,8 +23,8 @@ contextBuilder = (options={}) ->
   baseContext = {urls, conditions, user}
   _.extend {}, baseContext, options
 
-port = 3000
-base = "http://127.0.0.1:#{port}"
+port = process.env.PORT or 3000
+base = process.env.BASE_URL or "http://127.0.0.1:#{port}"
 
 # Used for example purposes, see README
 todoServer = 'http://127.0.0.1:4000/api/todos'
@@ -91,4 +91,4 @@ app.post '/api/todos/:id/mark_active', (req, res) ->
 app.get '*', (req, res) ->
   res.sendFile __dirname + '/public/index.html'
 
-app.listen 3000
+app.listen port

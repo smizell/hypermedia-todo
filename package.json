@@ -2,13 +2,16 @@
   "name": "hypermedia-todo-example",
   "version": "0.0.1",
   "description": "",
-  "main": "server1.js",
   "author": "Stephen Mizell",
   "license": "MIT",
   "dependencies": {
+    "coffee-script": "latest",
     "body-parser": "^1.9.2",
     "cors": "^2.5.1",
     "express": "^4.10.1",
     "lodash": "^2.4.1"
+  },
+  "scripts": {
+    "start": "coffee app.coffee"
   }
 }
