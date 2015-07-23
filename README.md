@@ -13,8 +13,8 @@ npm install
 
 Run the server:
 
-```
-coffee app.coffee
+```shell
+npm start
 ```
 
 *Note*: You can use `nodemon` to watch for changes for you.

@@ -1,0 +1,11 @@
+{
+  "name": "Hypermedia Todo",
+  "description": "Example Hypermedia Todo Service.",
+  "repository": "https://github.com/smizell/hypermedia-todo",
+  "website": "https://github.com/smizell/hypermedia-todo",
+  "keywords": [
+    "api",
+    "siren",
+    "hypermedia"
+  ]
+}
